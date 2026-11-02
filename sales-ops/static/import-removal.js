@@ -1,0 +1,62 @@
+let pendingImportRemoval = null;
+let importRemovalSubmitting = false;
+const importSectionTitles = {rghs:'RGHS Data', served:'Already Served', doctors:'Doctors', potential:'Potential Leads'};
+
+function renderImportRemoval() {
+  const body = document.getElementById('importRemovalRows'); if (!body) return;
+  const targets = [];
+  if (invoiceWorkbook) {
+    targets.push({scope:'workbook',name:invoiceWorkbook.filename || 'Imported workbook',label:invoiceWorkbook.filename || 'Imported workbook',count:invoiceWorkbook.sheets.reduce((sum,sheet)=>sum+sheet.rows.length,0)});
+    invoiceWorkbook.sheets.forEach(sheet => targets.push({scope:'worksheet',name:sheet.name,label:sheet.name,count:sheet.rows.length}));
+  }
+  Object.entries(importSectionTitles).forEach(([name,label])=>{if(sectionRecords[name]?.length)targets.push({scope:'segment',name,label,count:sectionRecords[name].length});});
+  body.replaceChildren();
+  targets.forEach(target => {
+    const row = document.createElement('tr');
+    [target.label, target.scope==='workbook'?'Whole imported workbook':target.scope==='worksheet'?'One worksheet':'One imported section',String(target.count)].forEach(value=>{const cell=document.createElement('td');cell.textContent=value;row.appendChild(cell);});
+    const cell = document.createElement('td'), button = document.createElement('button');
+    button.className='btn danger'; button.textContent='Remove'; button.addEventListener('click',()=>openImportRemoval(target)); cell.appendChild(button);row.appendChild(cell);body.appendChild(row);
+  });
+  if(!targets.length)body.innerHTML='<tr><td colspan="4" class="empty-state">No imported worksheets or sections to remove.</td></tr>';
+}
+function openImportRemoval(target) {
+  if(dashboardResetting||importRemovalSubmitting)return;
+  pendingImportRemoval={...target,version:dashboardDataVersion,workbook:invoiceWorkbook};
+  document.getElementById('importRemovalForm').reset();
+  document.getElementById('importRemovalName').textContent=target.label;
+  document.getElementById('importRemovalPhrase').textContent='REMOVE '+target.name;
+  document.getElementById('importRemovalError').textContent='';
+  document.getElementById('importRemovalDialog').showModal();
+  document.getElementById('importRemovalConfirmation').focus();
+}
+function closeImportRemoval(){if(importRemovalSubmitting)return;pendingImportRemoval=null;document.getElementById('importRemovalDialog').close();}
+async function removeSelectedImport(event) {
+  event.preventDefault(); const target=pendingImportRemoval;
+  if(!target||dashboardResetting||importRemovalSubmitting)return;
+  const error=document.getElementById('importRemovalError'), button=document.getElementById('importRemovalSubmit');
+  importRemovalSubmitting=true;button.disabled=true;error.textContent='';
+  try {
+    const response=await fetch('/api/admin/remove-import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scope:target.scope,name:target.name,confirmation:document.getElementById('importRemovalConfirmation').value})});
+
+    const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'Removal was not authorized.');
+    if(result.authorized_scope!==target.scope||result.authorized_name!==target.name)throw new Error('Removal scope did not match.');
+    if(dashboardResetting||target.version!==dashboardDataVersion||target.workbook!==invoiceWorkbook)throw new Error('Dashboard data changed. Select the import again.');
+    const updatedWorkbook=clone(invoiceWorkbook), updatedSections=clone(sectionRecords);
+    let nextWorkbook=updatedWorkbook;
+    if(target.scope==='worksheet') {
+      if(!updatedWorkbook?.sheets.some(sheet=>sheet.name===target.name))throw new Error('That worksheet is no longer available.');
+      updatedWorkbook.sheets=updatedWorkbook.sheets.filter(sheet=>sheet.name!==target.name);
+      if(updatedWorkbook.sheet_previews)delete updatedWorkbook.sheet_previews[target.name];
+    } else if(target.scope==='workbook')nextWorkbook=null;
+    else updatedSections[target.name]=[];
+    const nextBackups=[makeDashboardBackup('Before removing '+target.label),...backups].slice(0,10);
+    const values={hk_v2_invoice_workbook:nextWorkbook,hk_v2_segments:{served:updatedSections.served,doctors:updatedSections.doctors,potential:updatedSections.potential},hk_v2_backups:nextBackups};
+    if(target.scope==='segment')values['hk_v2_'+target.name]=updatedSections[target.name];
+    await writeDashboardValues(values);
+    backups=nextBackups;
+    invoiceWorkbook=nextWorkbook;sectionRecords=updatedSections;segmentData={served:updatedSections.served,doctors:updatedSections.doctors,potential:updatedSections.potential};dashboardDataVersion++;
+    importRemovalSubmitting=false;closeImportRemoval();renderAll();renderImportRemoval();
+    toast(target.label+' removed. Other imports and saved client history are kept. A backup is available.');
+  } catch(failure){error.textContent=failure.message;}
+  finally{importRemovalSubmitting=false;button.disabled=false;}
+}

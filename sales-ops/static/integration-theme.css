@@ -1,0 +1,98 @@
+/* Shared CRM design tokens. Loaded last, after the imported workspace styles. */
+html.crm-integrated{--hk-orange:#4539ef;--hk-orange-dark:#3428d5;--hk-navy:#0c111b;--hk-navy2:#24203b;--hk-blue:#2f80ed;--bg:#fff;--card:#fff;--border:#e9eaf0;--text:#0c111b;--muted:#7b8290;--green:#19a357;--purple:#a536ee;--shadow:0 2px 8px #24203b06;--crm-soft:#f4f4fa;--intelligence-teal:#c8c1ff;color-scheme:light}
+html.crm-integrated.crm-dark{--hk-navy:#edf0f8;--hk-navy2:#24283a;--bg:#11131d;--card:#191c29;--border:#34394a;--text:#edf0f8;--muted:#a1a9bb;--crm-soft:#24283a;--shadow:0 2px 8px #0002;color-scheme:dark}
+.crm-integrated body{background:var(--bg);color:var(--text);font:14px/1.45 Arial,Helvetica,sans-serif}
+.crm-integrated :is(button,input,select,textarea){font-family:inherit}
+.crm-integrated :is(button,a,input,select,textarea):focus-visible{outline:2px solid var(--hk-orange);outline-offset:3px}
+.crm-integrated .content{max-width:none;padding:24px}
+.crm-integrated :is(.card,.filters,.kpi,.summary-box,.report-card,.lead-card,.queue-item,.call-row,.danger-stat,.health-pill,.activity-panel){background:var(--card);border-color:var(--border);box-shadow:var(--shadow);border-radius:13px}
+.crm-integrated .card-head{border-color:var(--border);padding:18px 20px}
+.crm-integrated .card-head h2{color:var(--text);font-size:15px;font-weight:600}
+.crm-integrated .card-body{padding:20px}
+.crm-integrated .btn{border:1px solid var(--border);border-radius:14px;padding:8px 13px;background:var(--card);color:var(--text);font-size:12px;font-weight:500;box-shadow:none}
+.crm-integrated .btn:hover{background:var(--crm-soft);border-color:var(--border);box-shadow:none}
+.crm-integrated :is(.btn.primary,.btn.navy,.chat-send){background:linear-gradient(#777cff,#2522e6);border-color:#605ff0;color:white;box-shadow:0 3px 8px #4339e51a}
+.crm-integrated :is(.btn.primary,.btn.navy,.chat-send):hover{background:#4539ef}
+.crm-integrated .btn.danger{color:#b12e2e;background:#fff7f7;border-color:#efcaca}
+.crm-integrated .control{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:14px;font-size:13px;min-height:38px;padding:9px 12px}
+.crm-integrated .control:focus{border-color:#8b83f4;box-shadow:0 0 0 3px #4539ef12}
+.crm-integrated .filters{padding:16px;gap:12px;margin-bottom:20px}
+.crm-integrated .filters .control{background:var(--card);font-size:12px}
+.crm-integrated .data-table{font-size:12px;background:var(--card);color:var(--text)}
+.crm-integrated .data-table th{background:var(--crm-soft);color:var(--muted);font-size:11px;font-weight:600;letter-spacing:0;padding:12px;border-color:var(--border)}
+.crm-integrated .data-table td{padding:12px;border-color:var(--border)}
+.crm-integrated .data-table tr:hover td{background:var(--crm-soft)}
+.crm-integrated :is(.client-name,.money,.queue-name,.stage-title,.summary-box b,.section-title,.panel-head h3){color:var(--text)}
+.crm-integrated :is(.tiny,.mini-help,.section-sub,.queue-meta,.kpi .sub,.kpi .label){color:var(--muted)}
+.crm-integrated .action-link{color:var(--hk-orange);font-size:11px}
+.crm-integrated .kpi .value{color:var(--hk-blue);font-size:25px}
+.crm-integrated .kpi:before{display:none}
+.crm-integrated .kpi.green .value{color:var(--green)}
+.crm-integrated .kpi.purple .value{color:var(--purple)}
+.crm-integrated .summary-box b{font-size:23px}
+.crm-integrated :is(.tabs,.stage-col,.panel-head,.work-legend){background:var(--crm-soft);border-color:var(--border)}
+.crm-integrated .tab{color:var(--muted)}
+.crm-integrated .tab.active{background:var(--card);color:var(--hk-orange)}
+.crm-integrated :is(.panel,.panel-body,.panel-actions,.excel-map-dialog,.import-confirm-panel,.chat-widget,.chat-quick,.chat-input-row,.workspace-command-dialog,.workspace-command-option){background:var(--card);color:var(--text);border-color:var(--border)}
+.crm-integrated .field label{color:var(--muted);font-size:12px}
+.crm-integrated .work-legend{font-size:11px;line-height:1.7;padding:12px 14px}
+.crm-integrated .toast{background:#4539ef;color:white;border-color:#605ff0}
+.crm-integrated :is(.intelligence-section-heading h3,.intelligence-focus-value,.intelligence-focus-card h4){color:var(--text)}
+.crm-integrated .intelligence-focus-card{background:var(--card);border-color:var(--border);color:var(--text)}
+.crm-integrated .intelligence-focus-card p{color:var(--muted)}
+.crm-integrated .intelligence-hero{background:linear-gradient(115deg,#302474,#4539a2);border-color:#4b3c93;box-shadow:none}
+.crm-integrated .intelligence-hero h2 span{color:#ddd8ff}
+.crm-integrated .intelligence-primary{background:#e8e4ff!important;color:#332677!important;border-color:#e8e4ff!important}
+.crm-integrated .intelligence-brief{background:var(--crm-soft);border-color:var(--border)}
+.crm-integrated .intelligence-brief :is(strong,p,.intelligence-quiet){color:var(--text)}
+.crm-integrated .intelligence-refresh{background:var(--card);border-color:var(--border);color:var(--muted)}
+.crm-integrated .chat-head{background:linear-gradient(115deg,#302474,#4539a2);color:white}
+.crm-integrated .chat-body{background:var(--crm-soft)}
+.crm-integrated .chat-msg.bot{background:var(--card);color:var(--text);border-color:var(--border)}
+.crm-integrated .chat-msg.user{background:#4539ef;color:white}
+.crm-integrated .chat-quick button{background:var(--crm-soft);color:var(--hk-orange);border-color:var(--border)}
+.crm-integrated #quoteKnowledgeStatus{background:var(--crm-soft);color:var(--muted);border-color:var(--border)}
+.crm-integrated .close{background:var(--crm-soft);color:var(--text)}
+/* Embedded pages share their parent navigation and title. Context actions remain. */
+.crm-embedded :is(.sidebar,.navigation-backdrop,.topbar-leading,.floating-tools,.admin-page-header){display:none!important}
+.crm-embedded .app{display:block;min-height:0}
+.crm-embedded .topbar{position:static;min-height:0;height:auto;padding:0 0 18px;background:transparent;border:0;box-shadow:none;backdrop-filter:none}
+.crm-embedded .top-actions{width:100%;justify-content:flex-end;gap:8px}
+.crm-embedded .top-actions .btn{display:inline-flex!important;font-size:12px;font-weight:500}
+.crm-embedded .content{padding:0 0 20px;margin:0;max-width:none}
+.crm-embedded .workspace-page{min-height:0}
+.crm-embedded .page-toolbar .section-title{font-size:16px}
+.crm-embedded .admin-page main{max-width:none;margin:0;padding:0}
+.crm-embedded .activity-panel{padding:20px}
+.crm-embedded .activity-panel>h2{display:none}
+.crm-embedded[data-module=assistant] .app{display:none}
+.crm-embedded[data-module=assistant] .chat-widget{position:relative;inset:auto;display:flex;width:100%;height:calc(100dvh - 4px);max-height:none;border-radius:13px;box-shadow:none}
+@media(max-width:760px){.crm-integrated .content{padding:14px}.crm-embedded .content{padding:0 0 12px}.crm-embedded .top-actions{justify-content:flex-start;gap:6px}.crm-embedded .top-actions .btn{font-size:11px;padding:7px 10px}.crm-integrated .card-body{padding:14px}.crm-integrated .data-table td{padding:10px}.crm-integrated .intelligence-hero h2{font-size:28px}}
+
+/* Keep workflow colours visible inside the shared dashboard theme. */
+.crm-integrated .work-red{ --work-tint:#fff6f6; --work-ink:#b52c2c; --work-line:#d64545; }
+.crm-integrated .work-green{ --work-tint:#f1faf4; --work-ink:#11733f; --work-line:#159455; }
+.crm-integrated .work-yellow{ --work-tint:#fff9c4; --work-ink:#806000; --work-line:#f1c40f; }
+.crm-integrated .work-blue{ --work-tint:#f1f6ff; --work-ink:#2254b3; --work-line:#2f6fed; }
+.crm-integrated .work-orange{ --work-tint:#fff4e5; --work-ink:#b45309; --work-line:#f97316; }
+.crm-integrated .data-table tr[class*="work-"] td{background:var(--work-tint)}
+.crm-integrated .data-table tr[class*="work-"] td:first-child{border-left:3px solid var(--work-line)}
+.crm-integrated :is(.queue-item,.lead-card)[class*="work-"]{background:var(--work-tint);border-left:3px solid var(--work-line)}
+.crm-integrated [class*="work-"] :is(.client-name,.queue-name,.work-name){color:var(--work-ink)}
+.crm-integrated.crm-dark [class*="work-"]{--work-tint:color-mix(in srgb,var(--work-line) 16%,var(--card));--work-ink:color-mix(in srgb,var(--work-line) 60%,white)}
+.crm-integrated .work-color-select{background:var(--card);color:var(--text);border-color:var(--border)}
+.crm-integrated .work-color-select option{background:var(--card);color:var(--text)}
+
+.quote-provider{padding:9px 12px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0}
+.quote-provider label{display:block;font-size:11px;margin-bottom:4px;color:var(--muted)}
+.quote-provider .control{width:100%;min-height:34px;border-radius:9px;padding:6px 9px}
+.quote-provider p{font-size:11px;line-height:1.4;margin:6px 0 0;color:var(--muted)}
+.quote-provider a{font-size:11px;color:var(--hk-orange)}
+.chat-quick[hidden],.quote-provider a[hidden]{display:none}
+.quote-reply-source{display:block;margin-top:7px;font-size:10px;color:var(--muted)}
+.crm-embedded[data-module=assistant] .chat-widget{min-height:0;flex-direction:column}
+.chat-body{min-height:75px}
+
+.crm-integrated .work-yellow .work-color-select{background:#fff6a5;color:#604b00;border-color:#d6ab00}
+
+#quoteWorkspaceFocus{display:block;margin-top:6px;font-size:11px;color:var(--muted)}

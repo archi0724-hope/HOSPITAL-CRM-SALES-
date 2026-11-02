@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open HOSPkart CRM</title></head>
+<body style="font-family:Segoe UI,Arial,sans-serif;padding:32px;color:#172a52">
+<h1>HOSPkart.com</h1><p>Start the app with run_windows.bat or run_mac_linux.sh, then open the dashboard.</p>
+<p><a id="dashboardLink" href="http://127.0.0.1:5000/">Open dashboard</a></p>
+<p>The CRM requires its Python server for Excel imports and admin actions.</p>
+<script>
+const dashboardAddress=location.protocol==='file:'?'http://127.0.0.1:5000/':new URL('./',location.href).href;
+document.getElementById('dashboardLink').href=dashboardAddress;
+location.replace(dashboardAddress);
+</script>
+</body>
+</html>

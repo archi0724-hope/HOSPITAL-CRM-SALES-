@@ -1,0 +1,89 @@
+let dashboardResetting = false;
+let dashboardDataVersion = 0;
+
+async function performDashboardReset() {
+  if (dashboardResetting) return;
+  if (typeof importRemovalSubmitting !== 'undefined' && importRemovalSubmitting) { toast('Wait for the import removal to finish.'); return; }
+  if (!document.getElementById('resetAcknowledge').checked || document.getElementById('resetPhrase').value.trim() !== 'RESET DASHBOARD') {
+    toast('Confirm permanent deletion and type RESET DASHBOARD to continue.');
+    updateResetButton();
+    return;
+  }
+  if (emailSubmitting) { toast('Wait for the current email request to finish before resetting.'); return; }
+  if (quoteSaarthiSubmitting) { toast('Wait for the QuoteSaarthi request to finish before resetting.'); return; }
+  if (typeof sheetBusy !== 'undefined' && sheetBusy) { toast('Wait for the spreadsheet operation to finish before resetting.'); return; }
+  if (typeof driveImportBusy !== 'undefined' && driveImportBusy) { toast('Wait for the Drive import to finish before resetting.'); return; }
+  if (!crmAdminSession.can_edit) {toast('Data changes are unavailable until the server reconnects.'); return;}
+  dashboardResetting = true;
+  dashboardDataVersion++;
+  const button = document.getElementById('resetConfirmButton');
+  button.disabled = true;
+  button.textContent = 'Resetting…';
+  let completed = false;
+  try {
+    const response = await fetch('/api/dashboard/reset', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({confirmed_reset: true, confirmation: 'RESET DASHBOARD', workspace_revision: sharedWorkspaceRevision})
+    });
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.error || 'Could not clear server history.');
+    await acceptWorkspaceState(result.workspace);
+    invoiceWorkbook=null;renderInvoiceDashboard();
+    clients = [];
+    calls = [];
+    feedback = [];
+    complaints = [];
+    backups = [];
+    segmentData = {served: [], doctors: [], potential: []};
+    sectionRecords = {rghs: [], leads: [], served: [], doctors: [], potential: []};
+    sheetState = null;
+    sheetAppliedRevision = null;
+    invalidateSheetPreview();
+    filtered = [];
+    quickMode = 'all';
+    editingCallIndex = -1;
+    editingFeedbackIndex = -1;
+    document.querySelectorAll('.drawer.open').forEach(drawer => drawer.classList.remove('open'));
+    document.querySelectorAll('form').forEach(form => form.reset());
+    for (const id of ['clientEditId', 'feedbackClientId', 'workRecordId', 'workRecordScope', 'leadQuickClientId', 'leadQuickNext', 'leadQuickRemark', 'clientSearch', 'servedSearch', 'doctorSearch', 'potentialSearch', 'sourceDataSearch', 'waPhone', 'waMessage', 'schedulePhone', 'scheduleAt', 'scheduleTemplate', 'scheduleParams', 'emailTo', 'emailAt']) {
+      const field = document.getElementById(id);
+      if (field) field.value = '';
+    }
+    for (const id of ['waOptIn', 'scheduleOptIn', 'emailRecipientsConfirmed']) document.getElementById(id).checked = false;
+    document.getElementById('emailScope').value = 'all';
+    document.getElementById('emailSubject').value = '';
+    document.getElementById('emailMessage').value = '';
+    document.getElementById('emailResult').textContent = '';
+    document.getElementById('chatBody').replaceChildren();
+    rememberQuoteSaarthiSession(null);
+    addChatMessage('QuoteSaarthi: Select or add a hospital to begin a new follow-up.');
+    toggleChat(false);
+    closeLeadQuickEditor();
+    populateFilters();
+    clearFilters();
+    document.getElementById('formDate').value = TODAY;
+    document.getElementById('feedbackDate').value = TODAY;
+    document.getElementById('resetAcknowledge').checked = false;
+    document.getElementById('resetPhrase').value = '';
+    completed = true;
+  } catch (error) {
+    toast('Reset could not finish: ' + error.message);
+  } finally {
+    dashboardDataVersion++;
+    dashboardResetting = false;
+    button.textContent = 'Clear all dashboard data';
+    updateResetButton();
+  }
+  if (completed) {
+    await initializeSpreadsheetSync();
+    renderAll();
+    updateEmailRecipients();
+    loadScheduledMessages();
+    loadEmailHistory();
+    toast('Dashboard reset. All records, saved checkpoints, and follow-up history cleared. No backup was created.');
+  }
+}
+
+window.addEventListener('storage', event => {
+  if (event.key === 'hk_v2_reset_revision' && event.newValue) window.location.reload();
+});

@@ -1,0 +1,54 @@
+/* Reference Sections layout, scoped to leave the sales dashboard unchanged. */
+.sections-page{padding:10px 0 24px;margin:0;background:var(--panel)}
+.sections-page .toolbar{gap:12px;margin-bottom:20px}
+.sections-page .toolbar h2{font-size:18px;font-weight:500}
+.sections-page .toolbar input{width:198px}
+.sections-page .toolbar button,.sections-page .toolbar summary{min-height:36px;border-radius:15px;box-shadow:0 1px 3px #17233c0c}
+.sections-page .toolbar .primary{box-shadow:0 5px 10px #4339e52b}
+.sections-page .tablewrap{border-radius:16px 16px 0 0}
+.sections-table{table-layout:fixed;min-width:800px;font-size:14px}
+.sections-table thead{background:linear-gradient(100deg,#c1c5f2,#7c7fe5)}
+.sections-table th{background:transparent;color:#071b46;font-weight:600;height:45px;padding:11px 15px}
+.sections-table th button{font-weight:600;gap:8px;border-radius:2px}
+.sections-table .section-sort{font-size:16px;color:#5e6c8a;font-weight:400}
+.sections-table th[aria-sort=ascending] .section-sort,.sections-table th[aria-sort=descending] .section-sort{color:#071b46}
+.sections-table td{height:61px;padding:13px 15px;border-color:#f2f4f7;overflow-wrap:anywhere}
+.sections-table tr:last-child td{border-bottom:0}
+.sections-table tbody tr:hover td{background:#f7f9fb}
+.section-status{position:relative;display:flex;align-items:center;justify-content:space-between;width:112px;min-height:30px;border-radius:6px}
+.section-status:focus-within{outline:2px solid var(--primary);outline-offset:3px}
+.section-status select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.section-status-pill{background:#00c853;color:#fff;border-radius:20px;padding:2px 9px;font-size:12px;line-height:18px;font-weight:600;pointer-events:none}
+.section-status-pill.inactive{background:#e05260}
+.section-status-chevron{color:#adb8cb;pointer-events:none;font-size:16px}
+.sections-table .section-order{width:80px;min-height:32px;height:32px;padding:5px 12px;font-size:14px;box-shadow:0 1px 3px #18233b08}
+.sections-table .section-row-trigger{border:0;background:transparent;box-shadow:none;padding:4px 10px;font-size:21px;line-height:22px}
+.sections-page .pagination{margin-top:15px;font-size:14px;gap:16px;padding:0 15px}
+.sections-page .section-page-left,.sections-page .section-page-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sections-page .section-page-left label{display:flex;flex-direction:row;align-items:center;gap:8px}
+.sections-page .pagination select{width:100px;height:37px}
+.sections-page .pagination button{border:0;box-shadow:none;padding:7px 0;gap:7px;color:var(--muted)}
+.section-actions{position:relative}
+.section-actions>summary{list-style:none;display:flex;align-items:center;gap:12px;border:1px solid var(--line);padding:7px 13px;cursor:pointer}
+.section-actions>summary::-webkit-details-marker{display:none}
+.section-menu-list{z-index:45;display:flex;flex-direction:column;min-width:175px;border:1px solid var(--line);border-radius:12px;padding:5px;background:var(--panel);box-shadow:0 8px 24px #15233b20}
+.section-actions .section-menu-list{position:absolute;right:0;top:calc(100% + 6px)}
+.section-menu-list button{justify-content:flex-start;border:0;box-shadow:none;border-radius:8px;font-size:13px;padding:9px 12px}
+.section-menu-list .section-delete{color:#bb263d}
+#section-row-menu{position:fixed;max-width:calc(100vw - 20px)}
+#section-row-menu[hidden]{display:none}
+body.dark .sections-table tbody tr:hover td{background:var(--soft)}
+body.dark .sections-table td{border-color:var(--line)}
+@media(max-width:700px){.sections-page .toolbar h2{width:100%;margin-bottom:5px}.sections-page .toolbar{gap:8px}.sections-page .toolbar input{flex:1;min-width:140px;order:1}.sections-page .toolbar .primary{order:2}.sections-page .pagination{padding:0;gap:12px}.sections-page .section-page-left,.sections-page .section-page-right{gap:10px}.sections-page .pagination{font-size:12px}.sections-page .pagination select{width:70px}}
+
+.section-route-cell{display:flex;align-items:center;justify-content:space-between;gap:8px}.sections-table .section-route-copy{border:0;background:var(--soft);border-radius:50%;padding:5px;opacity:0}.sections-table tr:hover .section-route-copy,.section-route-copy:focus-visible{opacity:1}.section-route-cell>span{overflow-wrap:anywhere}
+@media(hover:none){.sections-table .section-route-copy{opacity:1}}
+
+/* Sidebar totals match the original All / Active / Inactive badges. */
+.submenu .nav-status-count{display:inline-flex;align-items:center;justify-content:center;min-width:23px;height:22px;padding:1px 7px;border:1px solid #dfe7f0;border-radius:12px;font-size:12px;line-height:18px;flex-shrink:0;margin-left:8px;font-variant-numeric:tabular-nums}
+.submenu .nav-count-all{background:#f2f5f9;color:#6b7f9c;border-color:#dfe7f0}
+.submenu .nav-count-active{background:#d1f5df;color:#008c36;border-color:#83e5a8}
+.submenu .nav-count-inactive{background:#ffdade;color:#c82839;border-color:#ff9ca8}
+body.dark .submenu .nav-count-all{background:#272e40;color:#bbc7dd;border-color:#414d66}
+body.dark .submenu .nav-count-active{background:#163729;color:#6fe3a1;border-color:#2d7850}
+body.dark .submenu .nav-count-inactive{background:#48222c;color:#ff9ba6;border-color:#934451}

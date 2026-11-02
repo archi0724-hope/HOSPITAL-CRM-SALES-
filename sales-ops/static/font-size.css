@@ -1,0 +1,9 @@
+.font-size-controls{display:inline-flex;align-items:center;gap:1px;border:1px solid var(--line,var(--border));border-radius:12px;background:var(--panel,var(--card));padding:2px;flex-shrink:0}
+.font-size-controls button{display:inline-flex;align-items:center;justify-content:center;min-width:28px;min-height:29px;padding:3px 5px;border:0;border-radius:9px;background:transparent;color:var(--ink,var(--text));font-size:13px;line-height:1.2;box-shadow:none;cursor:pointer}
+.font-size-controls button[data-font-reset]{min-width:40px;font-size:11px;font-variant-numeric:tabular-nums}
+.font-size-controls button:hover{background:var(--soft,var(--crm-soft))}
+.font-size-controls button:focus-visible{outline:2px solid var(--primary,var(--hk-orange));outline-offset:2px}
+.font-size-controls button:disabled{opacity:.4;cursor:default}
+#topbar .searchtrigger{flex:1;min-width:70px;max-width:290px}
+@media(max-width:600px){.font-size-controls button[data-font-reset]{display:none}.font-size-controls button{min-width:25px;padding:3px}.font-size-controls{padding:1px}#topbar{gap:6px}#topbar .searchtrigger{max-width:150px}#topbar .topright{gap:4px}.crm-embedded .top-actions>.font-size-controls{display:none}}
+@media print{.font-size-controls{display:none}}

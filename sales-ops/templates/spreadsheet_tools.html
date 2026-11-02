@@ -1,0 +1,10 @@
+<div class="toolbar-actions sheet-toolbar">
+  <button class="btn navy" type="button" onclick="openLeadQueryExport()">Export Excel</button>
+  <button class="btn hidden" id="sheetManageButton" type="button" onclick="openSpreadsheetConnection()">Manage spreadsheet</button>
+  <button class="btn primary" type="button" data-sheet-action onclick="syncLinkedSpreadsheet()" id="sheetSyncButton" disabled>Sync Now</button>
+</div>
+<div class="sheet-filters" aria-label="Lead filters">
+  <div class="field"><label for="sheetLeadSearch">Search leads</label><input id="sheetLeadSearch" class="control" type="search" placeholder="ID, name, company, contact…" oninput="renderLeadBoard();renderSpreadsheetRecords()"></div>
+  <div class="field"><label for="sheetLeadStatus">Lead status</label><select id="sheetLeadStatus" class="control" onchange="renderLeadBoard();renderSpreadsheetRecords()"><option value="">All statuses</option></select></div>
+  <div class="field"><label for="sheetLeadOwner">Assigned owner</label><select id="sheetLeadOwner" class="control" onchange="renderLeadBoard();renderSpreadsheetRecords()"><option value="">All owners</option></select></div>
+</div>

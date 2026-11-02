@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+*.pid
+.env
+.env.*
+!.env.example
+sales-ops/data/*.db*
+
+# Private imported CRM records and local verification copies
+imports/original-sales-report.json
+verification/sales-report/
+
+# Local state, private customer datasets and generated inspection artifacts
+node_modules/
+integration-backup/
+verification/
+audit/
+sales-ops/data/
+sales-ops/docs/screenshots/
+*.sqlite
+*.sqlite3
+*.db
+*.db-*
+*.pem
+*.key
