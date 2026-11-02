@@ -10,7 +10,7 @@ async function performDashboardReset() {
     return;
   }
   if (emailSubmitting) { toast('Wait for the current email request to finish before resetting.'); return; }
-  if (quoteSaarthiSubmitting) { toast('Wait for the QuoteSaarthi request to finish before resetting.'); return; }
+  if (quoteSaarthiSubmitting) { toast('Wait for the AI Assistance request to finish before resetting.'); return; }
   if (typeof sheetBusy !== 'undefined' && sheetBusy) { toast('Wait for the spreadsheet operation to finish before resetting.'); return; }
   if (typeof driveImportBusy !== 'undefined' && driveImportBusy) { toast('Wait for the Drive import to finish before resetting.'); return; }
   if (!crmAdminSession.can_edit) {toast('Data changes are unavailable until the server reconnects.'); return;}
@@ -56,7 +56,7 @@ async function performDashboardReset() {
     document.getElementById('emailResult').textContent = '';
     document.getElementById('chatBody').replaceChildren();
     rememberQuoteSaarthiSession(null);
-    addChatMessage('QuoteSaarthi: Select or add a hospital to begin a new follow-up.');
+    addChatMessage('AI Assistance: Select or add a hospital to begin a new follow-up.');
     toggleChat(false);
     closeLeadQuickEditor();
     populateFilters();

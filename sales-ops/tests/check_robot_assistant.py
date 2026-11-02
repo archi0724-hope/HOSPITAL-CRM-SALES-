@@ -48,8 +48,8 @@ def main():
                 for item in page.frames:
                     print('Frame:',item.url,'inert:',item.evaluate('document.body?.inert'))
                 raise
-            assert frame.locator('#quoteAnswerSource').input_value()=='workspace'
-            assert frame.locator('#quoteAnswerSource option').all_text_contents()==['HOSPkart workspace','Provided Excel report','Product catalogue & quotations']
+            assert frame.locator('#quoteAnswerSource').input_value()=='auto'
+            assert frame.locator('#quoteAnswerSource option').all_text_contents()==['Search & assistance','HOSPkart workspace','Provided Excel report','Product catalogue & quotations','Google Search']
             assert 'Gemini' not in frame.locator('#chatWidget').inner_text()
             assert 'AI Assistance' in frame.locator('.chat-head').inner_text()
             assert 'Your CRM intelligence assistant' not in frame.locator('.chat-head').inner_text()
@@ -58,6 +58,28 @@ def main():
                 frame.get_by_role('button',name='Send',exact=True).click()
                 frame.locator('.quote-reply-source').get_by_text('Saved CRM',exact=True).wait_for()
                 post.assert_not_called()
+            # Public Google search opens only the typed query in a separate tab.
+            context.route('https://www.google.com/**',lambda route:route.fulfill(status=200,content_type='text/html',body='<title>Google search fixture</title>'))
+            frame.locator('#quoteAnswerSource').select_option('web')
+            frame.get_by_label('Message AI Assistance').fill('hospital beds Jaipur & Delhi')
+            with page.expect_popup() as popup:
+                frame.get_by_role('button',name='Search',exact=True).click()
+            popup.value.wait_for_load_state()
+            from urllib.parse import urlsplit,parse_qs
+            assert parse_qs(urlsplit(popup.value.url).query)['q']==['hospital beds Jaipur & Delhi']
+            popup.value.close()
+            frame.locator('#quoteAnswerSource').select_option('')
+            assert frame.get_by_role('button',name='Upload catalogue',exact=True).is_visible()
+            frame.locator('#assistantCatalogueFile').set_input_files({'name':'catalogue.csv','mimeType':'text/csv','buffer':b'product_name,vendor_name,price,stock,category,manufacturer,specs,warranty\nIV Set,Vendor A,10,100,Injection,Test maker,Luer lock,Not provided\n'})
+            frame.locator('#chatBody').get_by_text('Catalogue ready:',exact=False).wait_for()
+            frame.get_by_label('Message AI Assistance').fill('IV Set vendor listing')
+            frame.get_by_role('button',name='Send',exact=True).click()
+            child=page.locator('#quote-robot-panel iframe').element_handle().content_frame()
+            child.wait_for_function('!quoteSaarthiSubmitting')
+            assert 'Vendor A' in frame.locator('#chatBody').inner_text()
+            assert 'INR 10.00' in frame.locator('#chatBody').inner_text()
+            frame.locator('#quoteAnswerSource').select_option('workspace')
+            assert 'QuoteSaarthi' not in frame.locator('body').inner_text()
             # Text grows, rather than zooming the entire layout, in parent and iframe.
             parent_size=page.get_by_role('heading',name='Sections',exact=True).evaluate('el=>parseFloat(getComputedStyle(el).fontSize)')
             child_size=frame.locator('.chat-head strong').evaluate('el=>parseFloat(getComputedStyle(el).fontSize)')

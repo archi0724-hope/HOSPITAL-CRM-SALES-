@@ -617,13 +617,13 @@ def smartbot_reply(message: str, context: dict | None = None) -> str:
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
     if not api_key:
         return (
-            "QuoteSaarthi CRM summaries need OpenAI, which is not configured yet. Add OPENAI_API_KEY to the .env file and restart the server. "
+            "AI Assistance CRM summaries need OpenAI, which is not configured yet. Add OPENAI_API_KEY to the .env file and restart the server. "
             "You can still use the CRM and WhatsApp handoff tools."
         )
 
     model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini").strip() or "gpt-4.1-mini"
     system_context = {
-        "role": "QuoteSaarthi, HOSPkart internal CRM and sales operations assistant",
+        "role": "AI Assistance, HOSPkart internal CRM and sales operations assistant",
         "rules": [
             "Use clear, concise business English.",
             "Help with hospital/client follow-ups, quotation follow-ups, order updates, feedback messages and CRM summaries.",
@@ -898,6 +898,29 @@ def chat():
         return jsonify({"ok": False, "error": str(exc)}), 500
 
 
+@app.route('/api/assistant/catalogue', methods=['GET','POST'])
+def assistant_catalogue_setup():
+    from quotesaarthi.runtime import get_service
+    from assistant_catalogue import import_catalogue, FIELDS
+    service=get_service(DATA_DIR)
+    if request.method=='GET':
+        response=jsonify(ok=True,available=service.catalog.is_file(),required_columns=FIELDS)
+        response.headers['Cache-Control']='no-store, private'
+        return response
+    upload=request.files.get('file')
+    if not upload:return jsonify(ok=False,error='Choose a CSV or XLSX catalogue.'),400
+    try:
+        with service.lock:
+            if service.catalog.is_file() and request.form.get('replace')!='true':
+                return jsonify(ok=False,error='A catalogue already exists. Confirm replacement to update it.'),409
+            count=import_catalogue(upload,service.catalog)
+        return jsonify(ok=True,products=count,message='Product catalogue saved. New conversations use the updated product data.')
+    except ValueError as error:
+        return jsonify(ok=False,error=str(error)),400
+    except OSError:
+        return jsonify(ok=False,error='The catalogue could not be saved. Check server storage and retry; no CRM records were changed.'),503
+
+
 @app.get('/api/quotesaarthi/status')
 def quotesaarthi_ai_status():
     from google_ai import status
@@ -928,13 +951,22 @@ def quotesaarthi_chat():
             # Google mode receives typed chat only. Workspace answers stay local.
             answer = google_reply(message.strip(), body.get('history'))
             response = jsonify(ok=True, reply=answer, provider='Google Gemini', session_id=token,
-                               exports=[], assistant='QuoteSaarthi')
+                               exports=[], assistant='AI Assistance')
             response.headers['Cache-Control'] = 'no-store, private'
             return response
         except GoogleAIError as error:
             return jsonify(ok=False, error=str(error)), error.status
+    if body.get('mode') == 'web':
+        from assistant_catalogue import google_search
+        return jsonify(ok=True,reply='Open live Google results for your question below.',provider='Google Search',
+                       assistant='AI Assistance',exports=[],search_actions=[google_search(message.strip())])
+    if token is None and message.strip().lower().rstrip('!.?') in {'hi','hello','hey','namaste','namaskar','help'}:
+        from quotesaarthi.runtime import get_service
+        if not get_service(DATA_DIR).catalog.is_file():
+            from assistant_catalogue import fallback
+            return jsonify(fallback(message.strip()))
     import report_knowledge
-    if body.get('mode') == 'report' or (body.get('mode') == 'workspace' and report_knowledge.matches(message) and report_knowledge.SOURCE.is_file()):
+    if body.get('mode') == 'report' or (body.get('mode') in ('workspace','auto') and report_knowledge.matches(message) and report_knowledge.SOURCE.is_file()):
         try:
             response = jsonify(ok=True, reply=report_knowledge.reply(message), provider='Provided Excel report',
                                assistant='AI Assistance', session_id=token, exports=[])
@@ -962,12 +994,12 @@ def quotesaarthi_chat():
                         answer = 'Live AI is temporarily unavailable. Saved CRM answer:\n\n' + answer
                 else:
                     answer = 'Live AI is not connected yet. Saved CRM answer:\n\n' + answer
-            response = jsonify(ok=True,reply=answer,provider=provider,session_id=token,exports=[],assistant='QuoteSaarthi',
+            response = jsonify(ok=True,reply=answer,provider=provider,session_id=token,exports=[],assistant='AI Assistance',
                                knowledge={'revision':knowledge['revision'],'checked_at':knowledge['checked_at'],'source':knowledge['source']})
             response.headers['Cache-Control'] = 'no-store, private'
             return response
         except Exception:
-            app.logger.exception('QuoteSaarthi CRM knowledge unavailable')
+            app.logger.exception('AI Assistance CRM knowledge unavailable')
             return jsonify(ok=False,error='Saved CRM data could not be read. Your records were not changed; retry when the shared database is available.'),503
     try:
         from quotesaarthi.runtime import get_service
@@ -977,11 +1009,14 @@ def quotesaarthi_chat():
         return jsonify(get_service(DATA_DIR).chat(message.strip(),token,options))
     except LookupError as error:
         return jsonify(ok=False,error=str(error),conversation_expired=True),409
-    except (FileNotFoundError,ValueError) as error:
+    except FileNotFoundError:
+        from assistant_catalogue import fallback
+        return jsonify(fallback(message.strip()))
+    except ValueError as error:
         return jsonify(ok=False,error=str(error)),503
     except Exception:
-        app.logger.exception('QuoteSaarthi request failed')
-        return jsonify(ok=False,error='QuoteSaarthi could not complete this request. Please try again.'),503
+        app.logger.exception('AI Assistance request failed')
+        return jsonify(ok=False,error='AI Assistance could not complete this request. Please try again.'),503
 
 
 crm_public_status_lock = RLock()
@@ -1008,7 +1043,7 @@ def quotesaarthi_knowledge_status():
         response.headers['Cache-Control'] = 'no-store, private'
         return response
     except Exception:
-        app.logger.exception('QuoteSaarthi knowledge check failed')
+        app.logger.exception('AI Assistance knowledge check failed')
         return jsonify(ok=False,error='CRM knowledge unavailable. Saved data was not changed.'),503
 
 

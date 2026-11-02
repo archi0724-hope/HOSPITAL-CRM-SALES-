@@ -1,10 +1,10 @@
-# HOSPkart Hospital CRM + QuoteSaarthi + WhatsApp
+# HOSPkart Hospital CRM + AI Assistance + WhatsApp
 
 ## PostgreSQL and Drive workbook imports
 
 Set the private server environment variable `DATABASE_URL` to your PostgreSQL connection URL (use TLS and a pooled URL where provided). Install `requirements.txt`, then start `python production.py`. The existing schema is initialized automatically. `/api/health` reports `database_engine: postgresql` when connected. A configured but unreachable PostgreSQL database fails visibly; it never switches to an empty SQLite database. Keep credentials out of Git and browser settings.
 
-PostgreSQL holds shared CRM records, complaints, invoice worksheets, messages, spreadsheet connections, Drive bookmarks and saved workbook copies. Render Free can use an external PostgreSQL database without a paid disk. Files such as the optional QuoteSaarthi product catalogue still require separate provisioning; PostgreSQL does not make the server filesystem persistent. Without `DATABASE_URL`, local development continues using the existing SQLite database. Localhost and the hosted CRM share data only when intentionally configured to use the same database.
+PostgreSQL holds shared CRM records, complaints, invoice worksheets, messages, spreadsheet connections, Drive bookmarks and saved workbook copies. Render Free can use an external PostgreSQL database without a paid disk. Files such as the optional AI Assistance product catalogue still require separate provisioning; PostgreSQL does not make the server filesystem persistent. Without `DATABASE_URL`, local development continues using the existing SQLite database. Localhost and the hosted CRM share data only when intentionally configured to use the same database.
 
 **Import Excel → Google Drive link** accepts a Sheets or Drive Excel file link and uses the existing preview, mapping and confirmation flow. Save links for other CRM users in **View saved Drive links**. A folder link is a source location: choose an individual workbook inside it for import. Use **Attach workbook copy** on a saved link to store a downloaded `.xlsx`/`.xls` privately in the shared database. **Import saved copy** reuses that snapshot without Google credentials; its saved time is displayed. Fetching the latest private Drive version still requires server Google credentials and Viewer access. Saved copies do not refresh automatically. Use the stable-ID spreadsheet connection for ongoing Leads/Queries synchronization.
 
@@ -114,9 +114,9 @@ Run `.venv\Scripts\python.exe -m unittest discover -s tests` for backend regress
 
 For a complete illustrated walkthrough, see [README-2.md](README-2.md). Use [PPT_GENERATION_PROMPT.md](PPT_GENERATION_PROMPT.md) with the 23 synthetic screenshots in `docs/screenshots/` to create a project presentation.
 
-## QuoteSaarthi setup and team practice
+## AI Assistance setup and team practice
 
-QuoteSaarthi replaces the floating HOSPkart SmartBot. Product search, vendor comparison and single-product draft quotations use the handover CSV catalogue locally, without an OpenAI key. CRM summaries and reviewed WhatsApp follow-up drafts read saved CRM data locally without an AI key. This integration uses the handover agent and keyword catalogue search; it does not fine-tune a model or install the archive's virtual environment/vector database.
+AI Assistance replaces the floating HOSPkart SmartBot. Product search, vendor comparison and single-product draft quotations use the handover CSV catalogue locally, without an OpenAI key. CRM summaries and reviewed WhatsApp follow-up drafts read saved CRM data locally without an AI key. This integration uses the handover agent and keyword catalogue search; it does not fine-tune a model or install the archive's virtual environment/vector database.
 
 Install the project requirements, then prepare your private catalogue from the supplied ZIP or a CSV:
 
@@ -130,7 +130,7 @@ Keep `QUOTESAARTHI_USE_OLLAMA=false` for the default local search/template respo
 
 Practise in a separate browser profile:
 
-1. Open **QuoteSaarthi** and ask `IV Set ki vendor listing low-to-high pricing mein dikhao`.
+1. Open **AI Assistance** and ask `IV Set ki vendor listing low-to-high pricing mein dikhao`.
 2. Ask `Syringe 3 ml ka vendor-wise price comparison do`. Check catalogue prices, stock and vendor status before choosing.
 3. Ask `Quote IV Set 50 units with 5% discount and GST 18%`, substituting the verified product and correct tax rate. Missing quantity or GST produces a clarification, not an assumed quote.
 4. Select **Download JSON** or **Download PDF**. Review the product, vendor, quantity, discount, GST and final amount before sharing. These are drafts, not issued tax invoices, and do not automatically create CRM orders or quotations.
@@ -149,7 +149,7 @@ Imported data and checkpoints are stored in the shared database. Admin-authorize
 
 VS Code-ready demo that combines the HOSPkart hospital/client CRM dashboard with:
 
-- floating QuoteSaarthi icon in the bottom-right corner
+- floating AI Assistance icon in the bottom-right corner
 - local catalogue assistant and automatic shared-database CRM knowledge
 - official Meta WhatsApp Cloud API connection
 - WhatsApp handoff for each hospital/client
@@ -159,7 +159,7 @@ VS Code-ready demo that combines the HOSPkart hospital/client CRM dashboard with
 - optional AI auto-replies to inbound hospital messages
 - Database logs for WhatsApp messages and scheduled jobs
 
-The earlier SmartBot integration inspired the CRM summary helper. QuoteSaarthi's catalogue agent comes from the supplied IT handover and runs inside the existing dashboard; optional CRM messaging uses the OpenAI Responses API.
+The earlier SmartBot integration inspired the CRM summary helper. AI Assistance's catalogue agent comes from the supplied IT handover and runs inside the existing dashboard; optional CRM messaging uses the OpenAI Responses API.
 
 ## 1. Open in VS Code
 
@@ -202,7 +202,7 @@ pip install -r requirements.txt
 
 Copy `.env.example` to `.env` and add your credentials.
 
-Optional configuration for legacy OpenAI chat and WhatsApp automation replies (the QuoteSaarthi CRM widget uses local saved data):
+Optional configuration for legacy OpenAI chat and WhatsApp automation replies (the AI Assistance CRM widget uses local saved data):
 
 ```env
 OPENAI_API_KEY=your_openai_api_key
@@ -382,9 +382,9 @@ Use a separate CRM server and temporary database with fictional records for prac
 
 **Understanding the supplied invoice workbook:** the verified workbook has 38 distinct hospitals/clients, 61 non-cancelled invoices, 202 non-cancelled served item entries and ₹31,35,013.91 in invoice value. The cancelled sheet has 152 item rows representing 6 invoices. The Already Served entry headcount is 202; 38 is its distinct-client count. Counts describe this workbook, not every future upload. The overall workspace headcount can exceed both because it includes records and linked copies from all workspaces.
 
-## Automatic QuoteSaarthi CRM knowledge and testing
+## Automatic AI Assistance CRM knowledge and testing
 
-QuoteSaarthi reads the latest saved database workspace and independent queries in a consistent read transaction on each CRM question. It never relies on browser-provided totals, names or remarks. The browser sends only the selected record ID/workspace and current view. A new upload, spreadsheet sync or saved edit is immediately available to the next question; no vector index or model retraining is needed. Saved Google Sheet links alone do not import rows. Unsaved edits and unavailable sources are not guessed.
+AI Assistance reads the latest saved database workspace and independent queries in a consistent read transaction on each CRM question. It never relies on browser-provided totals, names or remarks. The browser sends only the selected record ID/workspace and current view. A new upload, spreadsheet sync or saved edit is immediately available to the next question; no vector index or model retraining is needed. Saved Google Sheet links alone do not import rows. Unsaved edits and unavailable sources are not guessed.
 
 The widget supports all-workspace summaries, per-workspace counts/statuses, queries, pending or resolved complaints, overdue/today follow-up queues, hospital/name/ID lookup, deduplicated invoice totals, connection guidance and reviewed message drafts. Answers show their saved revision and explain that browser filters are not applied. The server date is evaluated in Asia/Kolkata on every request. Workspace copies and repeated service entries count separately; distinct name/city combinations are a separate measure. Query fallback matches the existing dashboard when a lead is marked Query Received and has no independent query. Follow-up queues include closed-stage records with saved dates, matching the dashboard. Lists show at most 12 records with full queue counts.
 
@@ -432,11 +432,11 @@ The default is `ADMIN_ACCESS_REQUIRED=false`. The server owner can explicitly re
 Verification: `python -m unittest discover -s tests`, `python tests/check_dashboard_access.py`, and `python tests/check_admin_access.py`. Checks use isolated temporary databases and synthetic records.
 
 
-### QuoteSaarthi intelligence dashboard
+### AI Assistance intelligence dashboard
 
 The navy/teal dashboard retains the existing workspaces, filters, imports, exports and shared data controls. **Today’s focus** reads the server’s saved CRM snapshot for overdue follow-ups, follow-ups due today and unresolved complaints. These counts cover all saved workspaces independently of table filters, include closed records with follow-up dates, and show the checked time in IST and source revision. Record copies continue to count separately. When a server knowledge read fails, insights use the displayed browser copy if available and explicitly label it as offline and potentially out of date. Missing browser data remains unavailable. Cached follow-up counts include closed records with dates, ignore table filters and use IST; missing complaint data is never assumed to mean zero. A successful server read replaces the fallback.
 
-Use **Search workspace** or **Ctrl/Cmd+K** to navigate existing pages or ask QuoteSaarthi a question. The assistant brief and focus cards open the existing read-only conversation; they do not save records or send messages. Insights refresh after shared workspace revisions, while the dashboard is visible every minute, and with **Refresh insights**. QuoteSaarthi uses the latest saved records and existing deterministic CRM answers; this does not train a model or promise autonomous self-improvement.
+Use **Search workspace** or **Ctrl/Cmd+K** to navigate existing pages or ask AI Assistance a question. The assistant brief and focus cards open the existing read-only conversation; they do not save records or send messages. Insights refresh after shared workspace revisions, while the dashboard is visible every minute, and with **Refresh insights**. AI Assistance uses the latest saved records and existing deterministic CRM answers; this does not train a model or promise autonomous self-improvement.
 
 Run `python tests/check_intelligence_dashboard.py` for Chrome/Edge coverage of source counts, filter independence, safe search, keyboard dismissal, assistant briefs, revision refresh, unavailable states and mobile layout. Screenshots use synthetic data and are saved under the ignored `data/` image paths for local review.
 

@@ -1,4 +1,5 @@
 let quoteWorkspaceContext={};
+let assistantCatalogueAvailable=false;
 let quoteSaarthiSession=null;
 let quoteSaarthiSubmitting=false;
 let quoteKnowledgeLoading=false;
@@ -63,8 +64,44 @@ function renderQuoteSaarthiExports(message,exports){
 function updateQuoteAnswerSource(){
  const source=document.getElementById('quoteAnswerSource')?.value,catalogue=source==='';
  const note=document.getElementById('quoteSourceStatus'),button=document.querySelector('.chat-send');
- if(note)note.textContent=source==='report'?'Answers use the original Excel report snapshot and include its reporting period.':catalogue?'Product answers use the configured catalogue; verify draft quotations before sharing.':'HOSPkart workspace answers read the latest saved CRM records locally.';
- if(button)button.disabled=quoteSaarthiSubmitting;
+ if(note)note.textContent=source==='web'?'Google opens live search results in a new tab. Only the question you type is sent.':source==='report'?'Answers use the original Excel report snapshot and include its reporting period.':catalogue?(assistantCatalogueAvailable?'Product answers use your uploaded catalogue. Verify quotation details before sharing.':'Upload a verified catalogue for vendor prices and draft quotations. You can also use Google Search for public information.'):'Ask about saved CRM records or your report. For public information, choose Google Search.';
+ const tools=document.getElementById('assistantCatalogueTools');if(tools)tools.hidden=!catalogue;
+ if(button){button.disabled=quoteSaarthiSubmitting;button.textContent=source==='web'?'Search':'Send';}
+}
+async function refreshAssistantCatalogue(){
+ try{const r=await fetch('/api/assistant/catalogue',{cache:'no-store',signal:AbortSignal.timeout(10000)});const data=await r.json();if(r.ok&&data.ok)assistantCatalogueAvailable=data.available;}catch(_){}
+ updateQuoteAnswerSource();
+}
+function downloadAssistantCatalogueTemplate(){
+ const blob=new Blob(['product_name,vendor_name,price,stock,category,manufacturer,specs,warranty\r\n'],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+ link.href=url;link.download='product-catalogue-template.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function uploadAssistantCatalogue(input){
+ const file=input.files?.[0];if(!file)return;
+ if(quoteSaarthiSubmitting){toast('Wait for the current answer before uploading a catalogue.');input.value='';return;}
+ if(file.size>5*1024*1024){toast('Choose a catalogue of 5 MB or less.');input.value='';return;}
+ if(assistantCatalogueAvailable&&!confirm('Replace the saved product catalogue? New conversations will use the uploaded data. Existing quotations stay unchanged.')){input.value='';return;}
+ const form=new FormData();form.append('file',file);form.append('replace',String(assistantCatalogueAvailable));
+ try{
+  const response=await fetch('/api/assistant/catalogue',{method:'POST',headers:{'X-CRM-Request':'1'},body:form});const result=await response.json();
+  if(!response.ok||!result.ok){if(response.status===409)await refreshAssistantCatalogue();throw Error(result.error||'Catalogue could not be saved.');}
+  assistantCatalogueAvailable=true;rememberQuoteSaarthiSession(null);updateQuoteAnswerSource();addChatMessage('Catalogue ready: '+result.products+' product offers. Ask for a product or vendor comparison. Confirm GST before preparing a draft quotation.');toast('Product catalogue saved.');
+ }catch(error){toast(error.message);}finally{input.value='';}
+}
+function renderAssistantSearchActions(message,actions){
+ if(!Array.isArray(actions))return;
+ for(const action of actions){
+  try{const url=new URL(action.url);if(url.protocol!=='https:'||url.hostname!=='www.google.com'||url.pathname!=='/search')continue;
+   const link=document.createElement('a');link.className='btn assistant-search-link';link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=action.label||'Search Google';message.appendChild(link);
+  }catch(_){}
+ }
+}
+function searchGoogleFromInput(){
+ const input=document.getElementById('chatInput'),text=input.value.trim();if(!text){input.focus();return;}
+ const url=new URL('https://www.google.com/search');url.searchParams.set('q',text);
+ addChatMessage(text,'user');input.value='';const response=addChatMessage('Google search results for your question (opens in a new tab):');
+ renderAssistantSearchActions(response,[{label:'Open Google results',url:url.href}]);
+ window.open(url.href,'_blank','noopener,noreferrer');
 }
 
 window.addEventListener('message',event=>{

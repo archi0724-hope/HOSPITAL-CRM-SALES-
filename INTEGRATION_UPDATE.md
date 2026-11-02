@@ -10,7 +10,7 @@ The existing dashboard HTML, root app.js, data.js, styles.css, excel.js, operati
 
 Verification: 178 backend tests passed; 8 integration tests passed, including a served-HTML regression check. The running main inline script and all 18 external scripts parse successfully. HTTP checks passed for all 17 module routes. These are script/API checks, not a full browser walkthrough. Browser visual verification could not complete because browser access is unavailable and the selected Chrome window remained minimized.
 
-Open http://localhost:5500 and hard-refresh with Ctrl+F5. The Sales Operations sidebar contains hospitals/clients, RGHS, served records, doctors, Potential Leads, Leads & Queries, quotations, orders, calls, feedback, WhatsApp, email, reports, data/backups, activity and QuoteSaarthi. Start again using start-local.bat.
+Open http://localhost:5500 and hard-refresh with Ctrl+F5. The Sales Operations sidebar contains hospitals/clients, RGHS, served records, doctors, Potential Leads, Leads & Queries, quotations, orders, calls, feedback, WhatsApp, email, reports, data/backups, activity and AI Assistance. Start again using start-local.bat.
 
 Meetings/HOPE continue using their existing browser records; Sales Operations continues using its shared SQLite workspace. External delivery/private Google access, a product catalogue, and other unresolved audit items still require their own configuration or implementation. No hosted deployment was changed.
 

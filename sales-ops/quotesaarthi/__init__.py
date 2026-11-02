@@ -1,1 +1,1 @@
-"""QuoteSaarthi catalogue and quotation integration from the supplied handover."""
+"""AI Assistance catalogue and quotation integration from the supplied handover."""

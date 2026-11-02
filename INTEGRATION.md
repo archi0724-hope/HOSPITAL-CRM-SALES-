@@ -27,7 +27,7 @@ The original CRM files are backed up in integration-backup/. The supplied ZIP re
 
 ## External integrations
 
-The local launcher uses SQLite and disables background scheduling and automatic outbound messaging. No external account credentials were imported. WhatsApp delivery, SMTP email, private Google access and live AI require configuration before they can work. All related application screens and handlers are included. QuoteSaarthi's saved CRM answers are available; product-catalog search requires a prepared catalog, which was not included in the supplied archive.
+The local launcher uses SQLite and disables background scheduling and automatic outbound messaging. No external account credentials were imported. WhatsApp delivery, SMTP email, private Google access and live AI require configuration before they can work. All related application screens and handlers are included. AI Assistance's saved CRM answers are available; product-catalog search requires a prepared catalog, which was not included in the supplied archive.
 
 The source project's existing local access behavior is retained. For shared hosting, configure its administrator access and service credentials separately.
 
@@ -45,4 +45,4 @@ The standalone HTML file retains the original frontend. Use start-local.bat for 
 
 ## Interface polish
 
-Sales Operations navigation is grouped into Hospital directory, Sales pipeline, Customer outreach, and Reports & tools. Embedded pages hide their duplicate navigation and title; contextual workflow actions remain available. Parent/child navigation and theme messages require a matching origin and window source. QuoteSaarthi has a dedicated assistant view. Checks cover persistent module changes, assistant navigation, theme propagation and rejection of unrelated messages. The original meeting dashboard function, data and base stylesheet remain unchanged.
+Sales Operations navigation is grouped into Hospital directory, Sales pipeline, Customer outreach, and Reports & tools. Embedded pages hide their duplicate navigation and title; contextual workflow actions remain available. Parent/child navigation and theme messages require a matching origin and window source. AI Assistance has a dedicated assistant view. Checks cover persistent module changes, assistant navigation, theme propagation and rejection of unrelated messages. The original meeting dashboard function, data and base stylesheet remain unchanged.

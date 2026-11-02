@@ -8,6 +8,8 @@ python -m venv .venv
 .venv\Scripts\python.exe run_local.py
 ```
 
+AI Assistance offers **Google Search** for public queries: select it, type a question and press Search to open Google results in a separate tab. CRM records are not attached. Product prices and quotation drafts require verified product data: select Product catalogue & quotations, download the CSV template, and use Upload catalogue (CSV or XLSX, up to 5 MB / 10,000 rows). Missing catalogues produce actionable guidance instead of an error.
+
 Recent features: reference-style Sections management; live sidebar status counts; saved **A− / A+** text sizing (80–150%); a bottom-right **AI Assistance** robot; local workspace answers; read-only knowledge from your private Excel report; additive report import and matching eight-sheet XLSX export. Google Gemini controls have been removed from the dashboard. The assistant is not a connection to private ChatGPT workspace chats.
 
 ## Private data setup

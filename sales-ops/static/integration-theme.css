@@ -96,3 +96,11 @@ html.crm-integrated.crm-dark{--hk-navy:#edf0f8;--hk-navy2:#24283a;--bg:#11131d;-
 .crm-integrated .work-yellow .work-color-select{background:#fff6a5;color:#604b00;border-color:#d6ab00}
 
 #quoteWorkspaceFocus{display:block;margin-top:6px;font-size:11px;color:var(--muted)}
+
+.assistant-catalogue-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.assistant-catalogue-tools[hidden],.assistant-catalogue-tools input[hidden]{display:none}
+.assistant-catalogue-tools .btn{font-size:11px;padding:5px 8px}
+.assistant-search-link{display:flex!important;margin-top:9px;font-size:12px!important;color:var(--hk-orange)!important}
+.quote-provider{max-height:40%;overflow:auto}
+.chat-quick{max-height:110px;overflow:auto;flex-shrink:0}
+.chat-head,.chat-input-row{flex-shrink:0}

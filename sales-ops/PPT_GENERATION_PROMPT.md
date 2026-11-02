@@ -1,4 +1,4 @@
-# Complete PPT-generation prompt — HOSPkart CRM & QuoteSaarthi
+# Complete PPT-generation prompt — HOSPkart CRM & AI Assistance
 
 Copy the prompt below into your presentation-generation tool. Upload **README-2.md**, **README.md**, and the **docs/screenshots/** folder with it. If the tool does not accept folders, upload the PNG files individually or a ZIP containing those assets. This is a presentation specification, not a claim that a PPT has already been generated.
 
@@ -6,7 +6,7 @@ Copy the prompt below into your presentation-generation tool. Upload **README-2.
 
 ## Your role and deliverables
 
-Act as a senior product presentation designer, hospital-sales operations analyst, software architect and training-content writer. Create a complete, editable presentation explaining the **HOSPkart Hospital CRM & Sales Ops dashboard with QuoteSaarthi** to business development teams, calling executives, managers and an IT handover audience.
+Act as a senior product presentation designer, hospital-sales operations analyst, software architect and training-content writer. Create a complete, editable presentation explaining the **HOSPkart Hospital CRM & Sales Ops dashboard with AI Assistance** to business development teams, calling executives, managers and an IT handover audience.
 
 Use the supplied project documentation and actual screenshots as the source of truth. Produce:
 
@@ -21,13 +21,13 @@ Suggested filenames: `HOSPkart_CRM_QuoteSaarthi_Project_Presentation.pptx` and `
 ## Project identity and presentation goals
 
 Project name: **HOSPkart Hospital CRM & Sales Ops**.
-Embedded catalogue assistant: **QuoteSaarthi**.
+Embedded catalogue assistant: **AI Assistance**.
 Repository: `https://github.com/archi0724-hope/hospkart-HOSPITAL-CRM-SALES-OPS`.
 Documentation snapshot: **12 October 2026**, India time context.
 
-Explain both business use and implementation: why the dashboard exists, how executives use it, how Excel data becomes usable, how metrics differ by grain, how QuoteSaarthi drafts quotes, where data is stored, how admin removal protects scope, how integrations are configured, what was tested and what still needs development.
+Explain both business use and implementation: why the dashboard exists, how executives use it, how Excel data becomes usable, how metrics differ by grain, how AI Assistance drafts quotes, where data is stored, how admin removal protects scope, how integrations are configured, what was tested and what still needs development.
 
-Use clear business English. Add short Hinglish example queries where useful for QuoteSaarthi training. Assume the business audience is comfortable with spreadsheets but does not know Flask, IndexedDB or WSGI. Introduce technical terms with one plain-language explanation. Keep deeper API/setup detail in the appendix.
+Use clear business English. Add short Hinglish example queries where useful for AI Assistance training. Assume the business audience is comfortable with spreadsheets but does not know Flask, IndexedDB or WSGI. Introduce technical terms with one plain-language explanation. Keep deeper API/setup detail in the appendix.
 
 ## Evidence and claim rules — apply throughout
 
@@ -38,9 +38,9 @@ Use clear business English. Add short Hinglish example queries where useful for 
 - **Orders** includes quotation and other commercial stages; do not claim every row is a confirmed order.
 - Invoice value is not the same as CRM order value. Count invoice totals once per invoice, not once per item line. Payment status does not confirm delivery.
 - Product/category charts use item-level values. Location/payment/month charts use invoice-level values. Explain why totals can differ.
-- QuoteSaarthi uses local CSV keyword/entity search and deterministic draft arithmetic by default. Do not call it a fine-tuned model, a live-stock engine or an enabled vector-search pipeline.
+- AI Assistance uses local CSV keyword/entity search and deterministic draft arithmetic by default. Do not call it a fine-tuned model, a live-stock engine or an enabled vector-search pipeline.
 - Optional OpenAI powers CRM summaries/message drafting. Optional Ollama formatting needs separate setup. Local product search and draft quote arithmetic do not require OpenAI.
-- QuoteSaarthi supports **one product per draft**, requires confirmed quantity/GST, and exports **draft quotations**, not issued tax invoices. Drafts do not automatically create CRM quotations/orders.
+- AI Assistance supports **one product per draft**, requires confirmed quantity/GST, and exports **draft quotations**, not issued tax invoices. Drafts do not automatically create CRM quotations/orders.
 - WhatsApp API, SMTP and OpenAI require private configuration. Screenshot controls do not establish live provider delivery. No customer messages were sent during documentation capture.
 - SMTP **accepted** is not confirmed email delivery; this version does not track opens, bounces or replies.
 - Browser CRM data is not automatically shared across browsers, site addresses, devices or users. Full multi-user login/role control and shared server-side CRM storage are proposed work.
@@ -62,7 +62,7 @@ Use clear business English. Add short Hinglish example queries where useful for 
 - Use screenshots for implemented functionality. Use clearly labeled conceptual diagrams for architecture and proposed improvements.
 - Use icons sparingly. Do not rely on red/green alone: preserve work-status labels and legends.
 - Use minimal transitions. No dramatic animations that obscure tables or distract from workflow training.
-- Include a small section label: Overview / CRM / Excel & Reporting / QuoteSaarthi / Architecture / Operations / Training.
+- Include a small section label: Overview / CRM / Excel & Reporting / AI Assistance / Architecture / Operations / Training.
 
 ## Speaker-note requirements
 
@@ -76,7 +76,7 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Purpose:** identify the project and its scope.
 
-**On-slide content:** project title; “CRM, Excel invoice reporting, follow-ups and QuoteSaarthi draft quotations”; documentation snapshot date; repository link in small text.
+**On-slide content:** project title; “CRM, Excel invoice reporting, follow-ups and AI Assistance draft quotations”; documentation snapshot date; repository link in small text.
 
 **Visual:** current yellow wordmark treatment from `01-navigation.png`; a clean crop of `02-dashboard.png` as a supporting panel.
 
@@ -104,7 +104,7 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Visual:** editable process diagram; distinguish manual CRM updates from catalogue draft generation.
 
-**Notes:** sending, order confirmation and CRM posting require deliberate actions. QuoteSaarthi does not autonomously close sales or create orders.
+**Notes:** sending, order confirmation and CRM posting require deliberate actions. AI Assistance does not autonomously close sales or create orders.
 
 ### Slide 5 — Navigation and the 15 working pages
 
@@ -168,7 +168,7 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Visual:** side-by-side focused crops from `09-quotations.png` and `10-orders.png`.
 
-**Notes:** QuoteSaarthi drafts are not automatically posted here. Orders includes qualifying quotation-stage records, so the table must not be described as entirely confirmed orders.
+**Notes:** AI Assistance drafts are not automatically posted here. Orders includes qualifying quotation-stage records, so the table must not be described as entirely confirmed orders.
 
 ### Slide 13 — Calling & Follow-up
 
@@ -242,11 +242,11 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Notes:** explain why reset is not a one-sheet removal or live training cleanup method. Recommend isolated practice environments and a downloaded backup before any intentional reset.
 
-### Slide 22 — QuoteSaarthi: the embedded assistant
+### Slide 22 — AI Assistance: the embedded assistant
 
 **Content:** replaces earlier SmartBot; local product search; vendor comparison; reviewed single-product draft quotes; optional CRM summary helper.
 
-**Visual:** `20-quotesaarthi-search.png`; label the UI QuoteSaarthi consistently.
+**Visual:** `20-quotesaarthi-search.png`; label the UI AI Assistance consistently.
 
 **Notes:** explain local catalogue retrieval separately from optional LLM wording. No model fine-tuning or private catalogue publication is implied.
 
@@ -318,7 +318,7 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Content:** 58 documented backend test passes; actual Chrome/Edge workflows; CI Windows/Linux and Chromium; synthetic isolated checks; external deliveries excluded.
 
-**Visual:** editable test matrix with rows for imports/storage, admin removal, mobile, QuoteSaarthi arithmetic/session/downloads and integration boundaries.
+**Visual:** editable test matrix with rows for imports/storage, admin removal, mobile, AI Assistance arithmetic/session/downloads and integration boundaries.
 
 **Notes:** state the evidence accurately without fabricating a current CI screenshot. Provider credentials, live delivery and organizational uptime are separate from the demonstrated local regression checks.
 
@@ -328,7 +328,7 @@ Plan for a 30–40 minute presentation plus questions; the slide deck can also s
 
 **Visual:** `22-mobile.png` and `23-mobile-navigation.png`; concise 45-minute training agenda.
 
-**Notes:** follow the guide's timing: 5 navigation, 8 records, 7 calls, 7 invoices, 8 QuoteSaarthi, 5 backups, 5 messaging. Use separate practice data and never reset live data for training cleanup.
+**Notes:** follow the guide's timing: 5 navigation, 8 records, 7 calls, 7 invoices, 8 AI Assistance, 5 backups, 5 messaging. Use separate practice data and never reset live data for training cleanup.
 
 ### Slide 33 — Current limitations and proposed roadmap
 
@@ -358,7 +358,7 @@ Provide a compact table for all-workspace record headcount, filtered count, quot
 
 ### Appendix C — API and source-code handover map
 
-Show code components and representative endpoints: `/api/health`, `/api/import-excel`, `/api/invoice-workbook`, `/api/quotesaarthi/chat`, conversation-scoped POST downloads under `/api/quotesaarthi/download/<filename>`, `/api/email/send`, `/api/email/schedule`, WhatsApp routes and `/webhook`. Distinguish compatibility `/api/chat` from the new QuoteSaarthi widget endpoint. Use a table, not unexplained code walls. Do not expose session tokens or credentials.
+Show code components and representative endpoints: `/api/health`, `/api/import-excel`, `/api/invoice-workbook`, `/api/quotesaarthi/chat`, conversation-scoped POST downloads under `/api/quotesaarthi/download/<filename>`, `/api/email/send`, `/api/email/schedule`, WhatsApp routes and `/webhook`. Distinguish compatibility `/api/chat` from the new AI Assistance widget endpoint. Use a table, not unexplained code walls. Do not expose session tokens or credentials.
 
 ### Appendix D — Troubleshooting, assets and sources
 
@@ -400,7 +400,7 @@ If an image is missing or its relevant control is outside the crop, use a labele
 
 1. All 38 slides follow the requested sequence, include notes and use consistent branding.
 2. Every main workflow has a readable screenshot or a clearly labeled conceptual diagram.
-3. Current yellow logo and QuoteSaarthi name are consistent; no obsolete SmartBot branding as the active assistant.
+3. Current yellow logo and AI Assistance name are consistent; no obsolete SmartBot branding as the active assistant.
 4. Every screenshot or synthetic number has a demo caption. No real customer data, credentials or internal host paths appear unnecessarily.
 5. Record/client/invoice/item grain is explicit; ₹600 synthetic invoice total and ₹89.68 draft calculation are reconciled correctly.
 6. Independent copies, browser-origin storage, admin scope and reset behavior are explained without overstating protection.

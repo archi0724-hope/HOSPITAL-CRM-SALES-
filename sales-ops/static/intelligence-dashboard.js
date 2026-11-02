@@ -16,11 +16,11 @@ const workspaceCommands = [
   {label:'Email follow-ups', detail:'Saved email schedules', view:'email', symbol:'✉'},
   {label:'Reports & export', detail:'Review reports and download data', view:'reports', symbol:'↗'},
   {label:'Data & backups', detail:'Imports, checkpoints and recovery', view:'data', symbol:'▤'},
-  {label:'Ask QuoteSaarthi', detail:'A brief based on the latest saved CRM', prompt:'Summarize CRM dashboard', symbol:'✦'}
+  {label:'Ask AI Assistance', detail:'A brief based on the latest saved CRM', prompt:'Summarize CRM dashboard', symbol:'✦'}
 ];
 function askIntelligence(message) {
   toggleChat(true);
-  if (quoteSaarthiSubmitting) {toast('QuoteSaarthi is finishing your current answer.'); return;}
+  if (quoteSaarthiSubmitting) {toast('AI Assistance is finishing your current answer.'); return;}
   if (intelligenceSnapshot?.offline_copy) {
     const count = intelligenceSnapshot.followup_counts;
     const complaints = intelligenceSnapshot.complaints_available ? Object.entries(intelligenceSnapshot.complaint_status_counts).reduce((sum,[status,n]) => sum + (['Resolved','Closed'].includes(status) ? 0 : n),0) : 'unavailable';
@@ -41,7 +41,7 @@ function renderWorkspaceCommands() {
   const matches = workspaceCommands.filter(item => (item.label + ' ' + item.detail).toLowerCase().includes(query.toLowerCase()));
   const root = document.getElementById('workspaceCommandResults');
   root.replaceChildren();
-  const options = query ? [...matches, {label:'Ask QuoteSaarthi', detail:query, prompt:query, symbol:'✦'}] : matches;
+  const options = query ? [...matches, {label:'Ask AI Assistance', detail:query, prompt:query, symbol:'✦'}] : matches;
   for (const item of options) {
     const button = document.createElement('button'); button.type = 'button'; button.className = 'workspace-command-option';
     const icon = document.createElement('span'); icon.className = 'command-option-icon'; icon.textContent = item.symbol; icon.setAttribute('aria-hidden','true');

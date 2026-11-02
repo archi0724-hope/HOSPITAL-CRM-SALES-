@@ -114,7 +114,7 @@ class QuoteSaarthiAgent(HospKartAgent):
 
     def _render_quotation_text_template(self, quote, json_file, pdf_file):
         return '\n'.join([
-            'DRAFT QUOTATION — QuoteSaarthi',f"Quotation ID: {quote['quote_id']}",
+            'DRAFT QUOTATION — AI Assistance',f"Quotation ID: {quote['quote_id']}",
             f"Product: {quote['product_name']}",f"Vendor: {quote['vendor_name']}",
             f"Quantity: {quote['quantity']}",f"Unit Price: INR {quote['unit_price']:.2f}",
             f"Subtotal: INR {quote['subtotal']:.2f}",f"Discount: INR {quote['discount_amount']:.2f}",
@@ -128,7 +128,7 @@ class QuoteSaarthiAgent(HospKartAgent):
     def export_quotation_pdf(self, quote):
         target=self.exports_dir/f"{quote['quote_id']}.pdf"
         pdf=canvas.Canvas(str(target),pagesize=A4)
-        pdf.setTitle('QuoteSaarthi draft quotation')
+        pdf.setTitle('AI Assistance draft quotation')
         text=self._render_quotation_text_template(quote,'','').split('JSON Export:')[0]
         y=800
         for line in text.splitlines():
@@ -142,7 +142,7 @@ class QuoteSaarthiAgent(HospKartAgent):
 
     def _smalltalk_reply(self, query):
         reply=super()._smalltalk_reply(query)
-        return reply.replace('QuoteSarthi AI','QuoteSaarthi') if reply else reply
+        return reply.replace('AI Assistance','AI Assistance') if reply else reply
 
     def handle_query(self, query, options=None):
         if self._looks_like_quote_request(query.lower()) and len(re.findall(r'\d+\s*(?:units?|pieces?|pcs?)\b',query,re.I))>1:
@@ -191,6 +191,7 @@ class QuoteSaarthiService:
         self.lock=RLock()
         self.sessions={}
         self.rag=None
+        self.catalog_signature=None
 
     def conversation(self, token=None):
         with self.lock:
@@ -199,17 +200,19 @@ class QuoteSaarthiService:
             if token:
                 conversation=self.sessions.get(token)
                 if not conversation:
-                    raise LookupError('Conversation expired. Start a new QuoteSaarthi conversation.')
+                    raise LookupError('Conversation expired. Start a new AI Assistance conversation.')
             else:
                 if len(self.sessions)>=self.max_sessions:
-                    raise RuntimeError('QuoteSaarthi is busy. Please try again shortly.')
+                    raise RuntimeError('AI Assistance is busy. Please try again shortly.')
                 if not self.catalog.is_file():
-                    raise FileNotFoundError('QuoteSaarthi catalogue is not configured. Prepare the handover catalogue on this server.')
-                if self.rag is None:
+                    raise FileNotFoundError('Upload a verified product catalogue to use vendor prices and draft quotations.')
+                signature=(self.catalog.stat().st_mtime_ns,self.catalog.stat().st_size)
+                if self.rag is None or self.catalog_signature!=signature:
                     self.rag=HospKartRAG(catalog_csv_path=self.catalog,lightweight_mode=True)
                     if self.rag.products_df is None or self.rag.products_df.empty:
                         self.rag=None
                         raise ValueError('Catalogue has no usable product rows.')
+                self.catalog_signature=signature
                 token=secrets.token_urlsafe(32)
                 directory=self.directory/'conversations'/token
                 conversation=Conversation(QuoteSaarthiAgent(rag=self.rag,logs_dir=directory/'logs',exports_dir=directory/'exports'))
@@ -231,7 +234,7 @@ class QuoteSaarthiService:
                 if path.suffix in {'.json','.pdf'}:
                     exports.append({'name':path.name,'format':path.suffix[1:]})
                     reply=reply.replace(str(path),path.name)
-            return {'ok':True,'reply':reply,'response':reply,'session_id':token,'exports':exports,'assistant':'QuoteSaarthi'}
+            return {'ok':True,'reply':reply,'response':reply,'session_id':token,'exports':exports,'assistant':'AI Assistance'}
 
     def download(self, token, filename):
         if not token or not re.fullmatch(r'HOSP-[0-9_]+\.(?:json|pdf)',filename):

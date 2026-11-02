@@ -125,7 +125,11 @@ class QuoteSaarthiTests(unittest.TestCase):
 
     def test_missing_catalogue_does_not_break_dashboard(self):
         with patch('quotesaarthi.runtime.get_service',return_value=QuoteSaarthiService(self.root/'missing.csv',self.root)):
-            self.assertEqual(self.chat('IV Set listing').status_code,503)
+            response=self.chat('IV Set listing')
+            self.assertEqual(response.status_code,200)
+            self.assertIn('Upload catalogue',response.json['reply'])
+            self.assertEqual(response.json['search_actions'][0]['label'],'Search Google')
+            self.assertNotIn('QuoteSaarthi',response.json['reply'])
         self.assertEqual(self.client.get('/').status_code,200)
 
     def test_multi_item_requests_require_separate_quotes(self):

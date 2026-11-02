@@ -319,7 +319,7 @@ class HospKartAgent:
         greetings = {"hi", "hello", "hey", "hii", "namaste", "good morning", "good evening"}
         if lowered in greetings:
             return (
-                "Namaste! Main BD Helper QuoteSarthi AI hoon. "
+                "Namaste! Main BD Helper AI Assistance hoon. "
                 "Aap product search, vendor compare, ya invoice flow kisi bhi format me bol sakte ho."
             )
         if any(token in lowered for token in ("thanks", "thank you", "thx", "shukriya")):
@@ -603,7 +603,7 @@ class HospKartAgent:
             import ollama
 
             prompt = (
-                "You are QuoteSaarthi assistant.\n"
+                "You are AI Assistance assistant.\n"
                 f"Mode: {mode}\n"
                 f"User query: {query}\n"
                 "Structured data:\n"
@@ -1477,7 +1477,7 @@ class HospKartAgent:
         pdf.drawString(250, y, f"Bill Date: {bill_date}")
         pdf.drawString(430, y, "Place of Supply: Rajasthan (08)")
         y -= 20
-        pdf.drawString(50, y, "Reference Quotation: Prepared by QuoteSaarthi Assistant")
+        pdf.drawString(50, y, "Reference Quotation: Prepared by AI Assistance Assistant")
 
         y -= 30
         pdf.setFont("Helvetica-Bold", 11)

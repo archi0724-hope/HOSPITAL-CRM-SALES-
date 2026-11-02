@@ -2,7 +2,7 @@
 
 **Current app:** the assistant is named **AI Assistance**. Google Gemini controls were removed from the dashboard at the user's request. Use **HOSPkart workspace**, **Provided Excel report**, or **Product catalogue & quotations**. The instructions below describe the optional server integration only; no Google connection is enabled by the dashboard.
 
-The robot button in the bottom-right corner opens QuoteSaarthi from any dashboard page. The conversation stays open when navigating between pages. It supports keyboard close, mobile layouts and the existing quotation downloads.
+The robot button in the bottom-right corner opens AI Assistance from any dashboard page. The conversation stays open when navigating between pages. It supports keyboard close, mobile layouts and the existing quotation downloads.
 
 ## Available now
 
